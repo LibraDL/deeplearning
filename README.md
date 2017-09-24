@@ -1,1 +1,1 @@
-read deeplearning code and make notes
+read deeplearning codes and make notes
