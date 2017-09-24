@@ -38,7 +38,7 @@ class Neuron:
 #	def one_error_pd_w(self)
 #		return self.one_error_pd_vs_o(target_output)* self.h_pd_w
 		
-class Layer:#经过本层计算后得到本层各神经元输出的元组
+class Layer:#经过本层计算后得到本层各神经元输出的数组
     def __init__(self, num_neuron, bia):
 
         self.bia = bia if bia else random.random()
@@ -47,7 +47,7 @@ class Layer:#经过本层计算后得到本层各神经元输出的元组
         for i in range(num_neuron):
             self.neurons.append(Neuron(self.bia))
   
-    def from_X_H_list(self, inputs):#这一步将Neuron的计算结果传入self.neurons[]中生成list了
+    def from_X_H_list(self, inputs):#这一步将Neuron的计算结果传入self.neurons[]中生成数组了
         outputs = []
         for neuron in self.neurons:
             outputs.append(neuron.from_X_to_H(inputs))
@@ -64,7 +64,7 @@ class Network:
         self.H_layer = Layer(num_hidden, b1)
         self.O_layer = Layer(num_output, b2)
 
-        self.initial_Wi(Wi)#未赋予实例的方法被引用，就用self.函数名 的方式
+        self.initial_Wi(Wi)#未赋予实例的方法被引用，就用self.函数名 的方式？
         self.initial_Wh(Wh)
 
     def initial_Wi(self, Wi):
@@ -87,7 +87,7 @@ class Network:
                     self.O_layer.neurons[o].weights.append(Wh[weight_num])
                 weight_num += 1
 
-    def from_V_H_O(self, inputs):#这个程序把它定死就是3层网络
+    def from_V_H_O(self, inputs):#这个程序把它定死就是3层网络？反复用可不可以？
         H = self.H_layer.from_X_H_list(inputs)
         return self.O_layer.from_X_H_list(H)
     
@@ -109,7 +109,7 @@ class Network:
             error_sum_pd_o[o] = self.O_layer.neurons[o].one_error_pd_vs_o(training_outputs[o])
 			
 		#上面self.O_layer.neurons[o]是因为语句self.neurons.append(Neuron(self.bia))
-		#把neurons[o]变成了Neuron父类的实例集合
+		#把neurons[o]变成了Neuron的实例集合？
 		
         error_sum_pd_h = [0] * len(self.H_layer.neurons)
         for h in range(len(self.H_layer.neurons)):
@@ -135,12 +135,7 @@ class Network:
 
                 error_sum_pd_w = error_sum_pd_h[h] * self.H_layer.neurons[h].h_pd_w(w_ih)#特指v-h之间的权重
 
-                self.H_layer.neurons[h].weights[w_ih] -= self.Learn_Rate * error_sum_pd_w#修改权重
-
-    
-
-		
-		
+                self.H_layer.neurons[h].weights[w_ih] -= self.Learn_Rate * error_sum_pd_w#修改权重	
 
 
 
@@ -149,5 +144,5 @@ nn = Network(2, 3, 2, Wi=[0.15, 0.2, 0.25, 0.3, 0.25, 0.3], b1=0.35, Wh=[0.4, 0.
 for i in range(10):
     nn.train([0.05, 0.1], [0.01, 0.99])
     print(i, round(nn.error_sum([[[0.05, 0.1], [0.01, 0.99]]]), 5))
-#注意输出为error_sum,因为我们的目标就是误差最小，或者说误差为
+#注意输出为error_sum,因为我们的目标就是误差最小
 #网络2,3,2结构从17步开始就比2,2,2结构收敛快了
