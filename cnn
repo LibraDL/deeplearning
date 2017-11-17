@@ -1,0 +1,11 @@
+import tensorflow as tf
+
+oplist=[]
+input_arg  = tf.Variable(tf.ones([2, 3, 3, 5]))
+filter_arg = tf.Variable(tf.ones([1 ,1 , 5 ,2]))
+
+op2 = tf.nn.conv2d(input_arg, filter_arg, strides=[1,1,1,1], use_cudnn_on_gpu=False, padding='VALID')
+oplist.append([op2, "case 2"])
+oplist
+
+#[[<tf.Tensor 'Conv2D_18:0' shape=(2, 3, 3, 2) dtype=float32>, 'case 2']]
