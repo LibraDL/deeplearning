@@ -1,0 +1,77 @@
+import numpy as np
+import scipy.io as sio
+
+class MNISTDataHandler(object):
+  """
+    Members :
+      is_train - Options for sampling
+      path - MNIST data path
+      data - a list of np.array w/ shape [batch_size, 28, 28, 1]
+  """
+  def __init__(self, is_train):
+    self.is_train = is_train
+    self.data =self._get_data()
+
+  def _get_data(self):
+
+    data=[]  
+
+    a1=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase1.mat')
+    a2=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase2.mat')
+    a3=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase3.mat')
+    a4=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase4.mat')
+    a5=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase5.mat')
+    a6=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase6.mat')
+    a7=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase7.mat')
+    a8=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase8.mat')
+    a9=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase9.mat')
+    a10=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase10.mat')
+
+    b1=a1['CT_phase1']
+    b2=a2['CT_phase2']
+    b3=a3['CT_phase1']
+    b4=a4['CT_phase2']
+    b5=a5['CT_phase1']
+    b6=a6['CT_phase2']
+    b7=a7['CT_phase1']
+    b8=a8['CT_phase2']
+    b9=a9['CT_phase1']
+    b10=a10['CT_phase2']
+
+    c=np.zeros([10,512,512])
+
+
+    for i in range (272):
+        c[0,:,:] = b1[:,:,i]
+        c[1,:,:] = b2[:,:,i]
+        c[2,:,:] = b3[:,:,i]
+        c[3,:,:] = b4[:,:,i]
+        c[4,:,:] = b5[:,:,i]
+        c[5,:,:] = b6[:,:,i]
+        c[6,:,:] = b7[:,:,i]    
+        c[7,:,:] = b8[:,:,i]
+        c[8,:,:] = b9[:,:,i]
+        c[9,:,:] = b10[:,:,i]
+
+        d=np.reshape(c,[10,512,512,1])
+        e=np.ones([10,512,512,1])
+        d1=np.amin(d)
+        d2=np.amax(d)
+        
+
+        g=(d-d1*e)/(d2*e-d1*e)
+        
+        data.append(g)
+    
+    return data
+
+  def sample_pair(self, batch_size, label=None):
+    label = np.random.randint(270)
+    images = self.data[label]
+    
+    choice1 = np.random.choice(images.shape[0], batch_size)
+    choice2 = np.random.choice(images.shape[0], batch_size)
+    x = images[choice1]
+    y = images[choice2]
+    
+    return x, y
