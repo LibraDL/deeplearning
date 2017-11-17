@@ -1,0 +1,28 @@
+from scipy.misc import imread
+import cv2
+from skimage import io
+import matplotlib.pyplot as plt
+
+img = cv2.imread('/home/yudeliang/Desktop/DIRNet.png')
+img = io.imread('/home/yudeliang/Downloads/1.jpeg')
+io.imshow(img)
+io.show()
+
+
+
+import scipy.io as sio
+import numpy as np
+
+a3=sio.loadmat('/home/yudeliang/Desktop/DIRNet/MNIST_data/phase3.mat')
+b3=a3['CT_phase1']
+io.imshow(d3[0][:,:,0],cmap='Greys_r')
+
+
+
+import skimage.io as io
+
+str='/home/yudeliang/pic/grey/*.jpg'
+coll=io.ImageCollection(str)   # in order
+print(len(coll))
+io.imshow(coll[0])
+io.show()
